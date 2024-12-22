@@ -29,3 +29,18 @@ form input, form button {
   padding: 8px;
   font-size: 16px;
 }
+#content {
+  transition: all 0.3s ease;
+}
+
+button {
+  padding: 10px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
