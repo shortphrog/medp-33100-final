@@ -1,54 +1,66 @@
-var createError = require('http-errors');
+require('dotenv').config(); // Load .env file
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const multer = require('multer');
 const connectToDatabase = require('./config/db');
 const connectToCloudinary = require('./config/cloudinary');
+const app = express();
+// Import Routers
+const photosRouter = require('./routes/photos'); // Ensure this file exists
+const indexRouter = require('./routes/index'); // Ensure this file exists
+const usersRouter = require('./routes/users'); // Ensure this file exists
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
-
-
-
-
-var app = express();
-connectToDatabase ()
+// Database Connection
+connectToDatabase()
   .then((db) => {
-    app.locals.db = db;
+    app.locals.db = db; // Save database connection globally
+    console.log("Connected to MongoDB");
   })
-
-connectToCloudinary()
-  .then((cloudinary) =>{
-    app.locals.cloudinary = cloudinary;
+  .catch((err) => {
+    console.error("Failed to connect to MongoDB:", err);
+    process.exit(1); // Exit on database connection failure
   });
 
-// view engine setup
+// Cloudinary Connection
+connectToCloudinary()
+try {
+  const cloudinary = connectToCloudinary();
+  app.locals.cloudinary = cloudinary;
+  console.log("Connected to Cloudinary");
+} catch (err) {
+  console.error("Failed to connect to Cloudinary:", err);
+  process.exit(1); // Exit on Cloudinary configuration failure
+}
+
+
+// Middleware Setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(multer().single('file')); // Middleware for handling file uploads
 
+
+// Mount Routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/photos', photosRouter); // Route for photos
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
+// Catch 404 and Forward to Error Handler
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
+// Error Handler
+app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
   res.status(err.status || 500);
   res.render('error');
 });

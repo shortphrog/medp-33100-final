@@ -148,7 +148,7 @@
     });
 
     // Fetch and display photos on the map
-    fetch('/api/photos')
+    fetch('/photos')
       .then((response) => response.json())
       .then((photos) => {
         photos.forEach((photo) => {
@@ -174,7 +174,7 @@
       const formData = new FormData(form);
 
       try {
-        const response = await fetch('/api/photos/upload', {
+        const response = await fetch('/photos/upload', {
           method: 'POST',
           body: formData,
         });

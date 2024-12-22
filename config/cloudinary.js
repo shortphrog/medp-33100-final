@@ -1,7 +1,7 @@
 const cloudinary = require('cloudinary').v2;
+require('dotenv').config();
 
-
-async function connectToCloudnary() {
+const connectToCloudinary = () =>{
 
     // Configuration
     cloudinary.config({ 
@@ -9,10 +9,9 @@ async function connectToCloudnary() {
         api_key: '225773124528416', 
         api_secret: 'GzkeMZ0ynDanYZKRjBo-uHDeD2M' 
     });
-    
+    console.log("Connected to Cloudinary");
+    return cloudinary;
+};
 
-    return cloudinary; 
-}
-
-module.exports = connectToCloudnary; 
+module.exports = connectToCloudinary; 
    
