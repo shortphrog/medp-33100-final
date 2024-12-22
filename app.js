@@ -9,6 +9,10 @@ const connectToCloudinary = require('./config/cloudinary');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+
+
+
+
 var app = express();
 connectToDatabase ()
   .then((db) => {

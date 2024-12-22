@@ -1,67 +1,31 @@
-/* General Styles */
-body {
+body, html {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  color: #333;
+  padding: 0;
+  height: 100%;
 }
 
-/* Header Styles */
-header {
-  background-color: #007acc;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  font-size: 1.5em;
-  font-weight: bold;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* Map Container */
 #map {
-  width: 100%;
-  height: 70vh; /* Adjust height as needed */
-  margin: 20px auto;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Icon/Action Section */
-.icons-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0;
-}
-
-.icon {
-  width: 50px;
-  height: 50px;
-  margin: 0 10px;
-  background-color: #007acc;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  font-size: 1.2em;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.icon:hover {
-  background-color: #005f99;
-}
-
-/* Footer Styles */
-footer {
-  text-align: center;
-  padding: 10px;
-  background-color: #333;
-  color: white;
-  font-size: 0.9em;
   position: fixed;
-  bottom: 0;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.overlay {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  border-radius: 5px;
+  z-index: 10;
+}
+
+form input, form button {
+  display: block;
+  margin: 10px 0;
+  padding: 8px;
+  font-size: 16px;
 }

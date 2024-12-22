@@ -1,10 +1,105 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>{{title}}</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    {{{body}}}
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Map</title>
+  <!-- Mapbox CSS -->
+  <link
+    href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css"
+    rel="stylesheet"
+  />
+  <style>
+    /* Map container */
+    #map {
+      width: 100%;
+      height: 100vh; /* Full screen height */
+      position: absolute; /* Ensure it fills the background */
+      top: 0;
+      left: 0;
+      z-index: 0; /* Push it to the back */
+    }
+
+    /* Overlay content */
+    #content {
+      position: relative; /* Overlay above the map */
+      z-index: 1; /* Stack on top of the map */
+      background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+      padding: 20px;
+      max-width: 500px;
+      margin: 20px auto; /* Center the form */
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Form styling */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    form label {
+      font-weight: bold;
+    }
+
+    form input,
+    form textarea,
+    form button {
+      padding: 8px;
+      font-size: 1rem;
+    }
+
+    form button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    form button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <!-- Map Container -->
+  <div id="map"></div>
+
+  <!-- Overlay Content -->
+  <div id="content">
+    <h1>Interactive Map with Geotagged Photos</h1>
+    <h2>Upload Your Photo</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" required />
+
+      <label for="description">Caption:</label>
+      <textarea id="description" name="description" rows="4" required></textarea>
+
+      <label for="photo">Upload Photo:</label>
+      <input type="file" id="photo" name="photo" accept="image/*" required />
+
+      <label for="coordinates">Geolocation (lat,lng):</label>
+      <input type="text" id="coordinates" name="coordinates" placeholder="40.7831,-73.9712" required />
+
+      <button type="submit">Upload</button>
+    </form>
+  </div>
+
+  <!-- Mapbox JS -->
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+  <script>
+    // Mapbox access token
+    mapboxgl.accessToken = 'pk.eyJ1IjoiaGFuYS1yYXIiLCJhIjoiY200djU2Y3c3MDFxcDJycHh1NnU3dnZqdiJ9.0-Ys8ua8csX-F4a7McYn8A';
+
+    // Initialize map
+    const map = new mapboxgl.Map({
+      container: 'map', // container ID
+      style: 'mapbox://styles/mapbox/streets-v11', // map style
+      center: [-73.9712, 40.7831], // Manhattan coordinates [lng, lat]
+      zoom: 12, // starting zoom
+    });
+  </script>
+</body>
 </html>
