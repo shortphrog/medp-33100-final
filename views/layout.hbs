@@ -100,6 +100,53 @@
       center: [-73.9712, 40.7831], // Manhattan coordinates [lng, lat]
       zoom: 12, // starting zoom
     });
+
+    // Fetch and display photos on the map
+    fetch('/api/photos')
+      .then((response) => response.json())
+      .then((photos) => {
+        photos.forEach((photo) => {
+          const marker = new mapboxgl.Marker()
+            .setLngLat([photo.coordinates.lng, photo.coordinates.lat])
+            .setPopup(
+              new mapboxgl.Popup({ offset: 25 }).setHTML(`
+                <h3>${photo.title}</h3>
+                <img src="${photo.imageUrl}" alt="${photo.title}" style="width:200px;" />
+                <p>${photo.description}</p>
+              `)
+            )
+            .addTo(map);
+        });
+      })
+      .catch((err) => console.error('Error fetching photos:', err));
+
+    // Handle form submission
+    const form = document.getElementById('uploadForm');
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch('/api/photos/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          alert('Photo uploaded successfully!');
+          location.reload(); // Reload to display the new marker
+        } else {
+          const error = await response.json();
+          alert(`Error: ${error.error}`);
+        }
+      } catch (err) {
+        console.error('Upload failed:', err);
+        alert('An error occurred during upload.');
+      }
+    });
   </script>
 </body>
 </html>
+
