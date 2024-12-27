@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Post with Map</title>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Create Post Form -->
+  <form id="post_form">
+    <h2>Create a new post</h2>
+    <input type="text" name="title" placeholder="Title">
+    <input type="file" id="image_input" name="image" accept="image/*">
+    <textarea name="content" placeholder="Content" rows="4"></textarea>
+    <input type="hidden" id="latitude" name="latitude">
+    <input type="hidden" id="longitude" name="longitude">
+    <input id="submit_button" type="submit" value="Create Post">
+  </form>
+
+  <!-- Search Form -->
+  <h1>Gallery of Found Art</h1>
+  <form id="search_form">
+    <label>Search posts</label>
+    <input type="text" name="search" placeholder="Search">
+    <input type="submit" value="Search">
+  </form>
+
+  <!-- Posts Section -->
+  <div id="posts">
+    {{#each posts}}
+      <div class="post" id="{{this._id}}">
+        <h2>{{this.title}}</h2>
+        <p>{{this.content}}</p>
+        {{#if this.imageUrl}}
+          <img src="{{this.imageUrl}}" alt="Post image" />
+        {{/if}}
+        {{#each this.authors}}
+          <p>By @{{this.username}}</p>
+        {{/each}}
+        <h3>Comments</h3>
+        {{#each this.comments}}
+          <div class="comment">
+            <p>{{this.content}}</p>
+            {{#each this.authors}}
+              <p>By @{{this.username}}</p>
+            {{/each}}
+          </div>
+        {{/each}}
+        
+        <button class="toggle-comments"> Show Comments</button>
+        <form class="comment_form">
+          <input type="text" name="content" placeholder="Comment">
+          <input type="submit" value="Add">
+        </form>
+      </div>
+    {{/each}}
+  </div>
+
+  <!-- Toggle Button -->
+  <button id="toggle-posts">Show/Hide Previous Posts</button>
+
+  <!-- Map Container -->
+  <div id="map"></div>
+
+  <!-- Mapbox JS -->
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+  <script>
+    // Initialize Mapbox map
+    mapboxgl.accessToken = 'pk.eyJ1IjoiaGFuYS1yYXIiLCJhIjoiY200djU2Y3c3MDFxcDJycHh1NnU3dnZqdiJ9.0-Ys8ua8csX-F4a7McYn8A';  // Replace with your Mapbox API key
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [-73.9712, 40.7831], // Starting position
+      zoom: 12
+    });
+
+    map.addControl(new mapboxgl.NavigationControl());
+
+    let marker;
+
+    // Function to handle map click and capture coordinates
+    map.on('click', function (e) {
+      const coordinates = e.lngLat;
+      const latitude = coordinates.lat;
+      const longitude = coordinates.lng;
+
+      // Update hidden fields with coordinates
+      document.getElementById('latitude').value = latitude;
+      document.getElementById('longitude').value = longitude;
+
+      // Place marker on the map
+      if (marker) {
+        marker.setLngLat(coordinates); // Move existing marker
+      } else {
+        marker = new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
+      }
+    });
+
+    // Handle post form submission
+    document.getElementById('post_form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+
+      // Handle file upload (if any)
+      const imageInput = document.getElementById('image_input');
+      if (imageInput.files.length > 0) {
+        formData.append('image', imageInput.files[0]);
+      }
+
+      // Send form data to server (AJAX or fetch request)
+      fetch('/create-post', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Post created:', data);
+        // You can update the posts section dynamically here if needed
+        togglePostSize();  // Make previous posts smaller
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+
+    // Function to toggle the size of previous posts
+    function togglePostSize() {
+      const posts = document.querySelectorAll('.post');
+      posts.forEach(post => {
+        post.classList.toggle('smaller');  // Toggle the 'smaller' class
+      });
+    }
+
+    // Function to toggle visibility of posts
+    document.getElementById('toggle-posts').addEventListener('click', function() {
+      const postsContainer = document.getElementById('posts');
+      postsContainer.classList.toggle('hidden'); // Toggle the 'hidden' class
+    });
+  </script>
+  
+</body>
+</html>

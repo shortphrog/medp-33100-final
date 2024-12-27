@@ -1,0 +1,221 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  display: flex;
+  left: 10px; 
+  flex-direction: column;
+  gap: 10px;
+  max-width: 250px;
+  margin: 0 auto;
+}
+
+a {
+  color: #00B7FF;
+}
+
+h1 {
+  top: -10px;
+  left: 20px;
+  position:fixed;
+  color: #bd0808;
+}
+
+
+#posts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+.post {
+  border: 1px solid black;
+  padding: 5px;
+  border-radius: 7px; /* Rounded corners */
+  width: 220px;
+  position: relative;
+  margin-left: 10px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.15); /* Added shadow for depth */
+}
+
+.post img {
+  width: 50%;
+}
+
+#post_form {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  background-color: #FFEB3B; /* Sticky note color */
+  border-radius: 8px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  bottom: 20px; /* Distance from the bottom */
+  right: 20px;  /* Distance from the right */
+  width: 220px; /* Match the width of the sticky notes */
+  z-index: 20;  /* Ensure it's on top of other content */
+}
+
+
+/* Sticky note positioning */
+#posts {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%); /* Center vertically */
+  z-index: 10;
+}
+#search_form {
+  position: fixed;
+  top: 10px;  /* Distance from the top of the screen */
+  right: 20px; /* Distance from the left of the screen */
+  background-color: #FFEB3B; /* Optional: background color for visibility */
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Optional: shadow for depth */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 40;  /* Ensure it's above other elements */
+}
+
+#search_form input[type="text"] {
+  padding: 5px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+#map {
+  width: 100%;
+  height: 100vh; /* Full screen height */
+  position: absolute; /* Ensure it fills the background */
+  top: 0;
+  left: 0;
+  z-index: -1; /* Push it to the back */
+}
+/* Post Container Styles */
+#posts {
+  max-height: 80vh; /* Limit height to 80% of viewport height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 20px;
+  transition: all 0.3s ease; /* Smooth transition for showing/hiding */
+}
+
+/* Hidden state */
+#posts.hidden {
+  display: none;
+}
+
+/* Individual Post Styles */
+.post {
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 10px;
+  background: white;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Image containment */
+.post img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 10px 0;
+}
+
+/* Comment section styles */
+.comment {
+  margin: 10px 0;
+  padding: 10px;
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+/* Toggle button styles */
+#toggle-posts {
+  position: fixed;
+  Top: 160px;
+  right: 20px;
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+#toggle-posts:hover {
+  background: #0056b3;
+}
+
+/* Smaller post state */
+.post.smaller {
+  transform: scale(0.8);
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.comment-section {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.comments-section.hidden {
+  display: none;
+}
+
+.comment {
+  padding: 8px;
+  margin: 5px 0;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.toggle-comments {
+  display: block;
+  margin: 10px 0;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.toggle-comments:hover {
+  background: #5a6268;
+}
+
+/* Comment form styling */
+.comment_form {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.comment_form input[type="text"] {
+  flex: 1;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+.comment_form input[type="submit"] {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 4px 9px;
+  border-radius: 2px;
+  cursor: pointer;
+  display: flex;
+}
+
+.comment_form input[type="submit"]:hover {
+  background: #218838;
+}
